@@ -15,22 +15,22 @@ class _AnimatedUniverseBackgroundState extends State<AnimatedUniverseBackground>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   final List<Star> _stars = List.generate(
-    200,
+    80, // Reduced number for more minimalist look
     (index) => Star(
       x: math.Random().nextDouble(),
       y: math.Random().nextDouble(),
-      size: math.Random().nextDouble() * 2 + 1,
+      size: math.Random().nextDouble() * 1.2 + 0.3, // Smaller stars
     ),
   );
 
   final List<ShootingStar> _shootingStars = List.generate(
-    5,
+    2, // Fewer shooting stars for subtlety
     (index) => ShootingStar(
       startX: math.Random().nextDouble(),
-      startY: math.Random().nextDouble(),
-      speed: math.Random().nextDouble() * 0.5 + 0.5,
-      length: math.Random().nextDouble() * 50 + 50,
-      delay: math.Random().nextDouble() * 5,
+      startY: math.Random().nextDouble() * 0.3, // Start from top third
+      speed: math.Random().nextDouble() * 0.2 + 0.1, // Slower movement
+      length: math.Random().nextDouble() * 25 + 15, // Shorter trails
+      delay: math.Random().nextDouble() * 10, // More spread out timing
     ),
   );
 
@@ -39,7 +39,7 @@ class _AnimatedUniverseBackgroundState extends State<AnimatedUniverseBackground>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 20), // Slower animation
     )..repeat();
   }
 
@@ -55,7 +55,11 @@ class _AnimatedUniverseBackgroundState extends State<AnimatedUniverseBackground>
       animation: _controller,
       builder: (context, child) {
         return CustomPaint(
-          painter: UniversePainter(_stars, _shootingStars, _controller.value),
+          painter: UniversePainter(
+            _stars,
+            _shootingStars,
+            _controller.value,
+          ),
           size: Size.infinite,
         );
       },
